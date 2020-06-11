@@ -8,6 +8,7 @@ void main() {
   runApp(MaterialApp(
     title: 'Flutter Demo',
     theme: ThemeData(
+      fontFamily: 'Verdana', //Try remove it to see that font works very well
       primarySwatch: Colors.blue,
       visualDensity: VisualDensity.adaptivePlatformDensity,
     ),
@@ -160,69 +161,48 @@ class _ViewerState extends State<Viewer> {
             floating: true),
         SliverList(
           delegate: SliverChildListDelegate(MarkdownGenerator(
-                  data: data,
-                  childMargin:
-                      EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                  styleConfig: StyleConfig(
-                      // imgBuilder: (String url, attributes) {
-                      //   return Image.file(
-                      //       File('$_localPath/${widget.sName}/$url'));
-                      // },
-                      markdownTheme:
-                          (Theme.of(context).brightness == Brightness.dark)
-                              ? MarkdownTheme.darkTheme
-                              : MarkdownTheme.lightTheme,
-                      pConfig: PConfig(
-                          textStyle: TextStyle(fontFamily: 'Verdana'),
-                          selectable: false,
-                          linkGesture: (linkChild, url) => GestureDetector(
-                                child: linkChild,
-                                //  onTap: () => _launchURL(url),
-                              )),
-                      tableConfig: TableConfig(
-                        wrapBuilder: (table) => SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: table,
-                        ),
-                        bodyChildWrapper: (child) => Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: child,
-                        ),
-                        headChildWrapper: (child) => Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: child,
-                        ),
-                        headerStyle: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      olConfig: OlConfig(
-                          indexWidget: (int deep, int index) =>
-                              Text('${index + 1}.')),
-                      preConfig: PreConfig(
-                          preWrapper: (preWidget, text) {
-                            return Stack(
-                              children: <Widget>[
-                                preWidget,
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: IconButton(
-                                      icon: Icon(Icons.content_copy),
-                                      onPressed: () {
-                                        Clipboard.setData(
-                                            new ClipboardData(text: text));
-                                        Scaffold.of(context).showSnackBar(
-                                            SnackBar(
-                                                content:
-                                                    Text('Код скопирован')));
-                                      }),
-                                )
-                              ],
-                            );
-                          },
-                          theme:
-                              (Theme.of(context).brightness == Brightness.dark)
-                                  ? theme.vs2015Theme
-                                  : theme.doccoTheme)))
-              .widgets),
+              data: data,
+              childMargin:
+                  EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+              styleConfig: StyleConfig(
+                  markdownTheme:
+                      (Theme.of(context).brightness == Brightness.dark)
+                          ? MarkdownTheme.darkTheme
+                          : MarkdownTheme.lightTheme,
+                  pConfig: PConfig(
+                      //!!!!!!!!!
+                      //Yes, the problem is here. But I added all the fonts and announced them.
+                      //If you set the font through the main theme, everything will work.
+                      //The problem is changing the colors of the widget.
+                      //
+                      textStyle: TextStyle(fontFamily: 'Verdana'),
+                      //!!!!!!!!!!!!!!
+
+                      selectable: false,
+                      linkGesture: (linkChild, url) => GestureDetector(
+                            child: linkChild,
+                            //  onTap: () => _launchURL(url),
+                          )),
+                  preConfig: PreConfig(
+                    preWrapper: (preWidget, text) {
+                      return Stack(
+                        children: <Widget>[
+                          preWidget,
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                                icon: Icon(Icons.content_copy),
+                                onPressed: () {
+                                  Clipboard.setData(
+                                      new ClipboardData(text: text));
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                      content: Text('Код скопирован')));
+                                }),
+                          )
+                        ],
+                      );
+                    },
+                  ))).widgets),
         ),
       ],
     ));
