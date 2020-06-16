@@ -127,16 +127,14 @@ packages:
       name: markdown
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.4"
+    version: "2.1.5"
   markdown_widget:
     dependency: "direct main"
     description:
-      path: "."
-      ref: dev
-      resolved-ref: "67a0497c0a2af6448bd4e441a96cf65012247cc5"
-      url: "https://github.com/asjqkkkk/markdown_widget.git"
-    source: git
-    version: "1.2.0"
+      name: markdown_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
   matcher:
     dependency: transitive
     description:
